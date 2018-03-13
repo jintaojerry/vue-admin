@@ -1,0 +1,19 @@
+<template>
+    <div>
+       <button @click="add(10)">+</button>
+       <button @click="reduce">-</button>
+    </div>
+</template>
+
+<script>
+    import {mapMutations } from 'vuex';
+    export default {
+        methods: {
+            ...mapMutations(['add','reduce']),
+        },
+    }
+</script>
+
+<style scoped>
+
+</style>

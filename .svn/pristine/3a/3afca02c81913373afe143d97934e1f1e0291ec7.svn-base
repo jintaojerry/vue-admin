@@ -1,0 +1,17 @@
+<template>
+    <div>
+       分组管理
+    </div>
+</template>
+
+<script>
+    import {mapMutations } from 'vuex';
+    export default {
+        methods: {
+        },
+    }
+</script>
+
+<style scoped>
+
+</style>

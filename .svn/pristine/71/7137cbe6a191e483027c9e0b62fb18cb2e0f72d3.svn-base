@@ -1,0 +1,22 @@
+<template>
+    <div>
+        <h2>{{msg}}</h2>
+        <hr>
+    </div>
+</template>
+
+<script>
+    import {mapState} from 'vuex'
+    export default {
+        data() {
+            return {
+                msg: '我是首页',
+
+            }
+        },
+    }
+</script>
+
+<style scoped>
+
+</style>

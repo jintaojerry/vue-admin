@@ -1,0 +1,52 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+
+import Layout from '@/views/layout/layout'
+import Login from '@/views/login/login'
+import NotFound from '@/views/error-page/error-page'
+import Home from '@/views/layout/home'
+import VehicleManagement from '@/views/vehicle-management/vehicle-management'
+import UserManagement from '@/views/user-management/user-management'
+import GroupManagement from '@/views/group-management/group-management'
+
+
+Vue.use(Router)
+
+
+let routes = [
+  {
+      path: '/login',
+      component: Login,
+      name: '',
+      hidden: true
+  },
+  {
+      path: '/404',
+      component: NotFound,
+      name: '',
+      hidden: true
+  },
+  {
+      path: '/',
+      component: Layout,
+      children: [
+          {path:'/',redirect:'/home'},
+          { path: '/home', component: Home },
+          { path: '/user', component: UserManagement},
+          { path: '/vehicle', component: VehicleManagement},
+          { path: '/group', component: GroupManagement},
+      ]
+  },
+  {
+    path:'*',
+    component:NotFound,
+  }
+  
+];
+
+
+
+export default new Router({
+//   mode:'history',
+  routes
+})

@@ -1,0 +1,114 @@
+<template>
+    <div class="tabs">
+       
+        <el-tabs v-model="editableTabsValue2" type="card" closable @tab-remove="removeTab">
+            <el-tab-pane
+                v-for="(item, index) in editableTabs2"
+                :key="item.name"
+                :label="item.title"
+                :name="item.name"
+            >
+                {{item.content}}
+            </el-tab-pane>
+        </el-tabs>
+    </div>
+</template>
+
+<script>
+    import {basicDataItems,systermSettings} from '@/api/data'
+    import {mapState} from 'vuex'
+    export default {
+        // props: ['selectedItem'],
+        data() {
+            return {
+                editableTabsValue2: 'home',
+                editableTabs2: [{
+                    title: '后台首页',
+                    name: 'home',
+                }],
+                itemTabs:'',
+               
+            }
+        },
+        methods: {
+            addTab(item) {
+                this.editableTabs2.push({
+                    title: item.name,
+                    name: item.id,
+                });
+                this.editableTabsValue2 = item.id;
+            },
+            removeTab(targetName) {
+                let tabs = this.editableTabs2;
+                let activeName = this.editableTabsValue2;
+                if (activeName === targetName) {
+                    tabs.forEach((tab, index) => {
+                        if (tab.name === targetName) {
+                            let nextTab = tabs[index + 1] || tabs[index - 1];
+                            if (nextTab) {
+                                activeName = nextTab.name;
+                            }
+                        }
+                    });
+                }
+                
+                this.editableTabsValue2 = activeName;
+                this.editableTabs2 = tabs.filter(tab => tab.name !== targetName);
+            },
+            concatTabs() {
+              this.itemTabs =  basicDataItems.concat(systermSettings)
+            }
+        },
+        watch:{
+            selectedItem(newValue,oldValue){
+                let isHasTab = this.editableTabs2.some(item => item.name == newValue.id)
+                if (!isHasTab) {
+                    this.addTab(newValue)
+                }
+                else{
+                    this.editableTabsValue2 = newValue.id
+                }
+            },
+            editableTabsValue2(newValue,oldValue){
+                this.$router.push({path:newValue})
+            },
+        },
+        created() {
+            this.concatTabs()
+            let activePath = this.$route.path.substring(1);
+            let activeTab = this.itemTabs.filter( item => item.id == activePath)[0]
+            if(activeTab && activeTab.id != 'home') {
+                this.editableTabs2.push({
+                    title: activeTab.name,
+                    name: activeTab.id,
+                });
+                this.editableTabsValue2 = activeTab.id
+            }
+           
+        },
+         beforeRouteUpdate (to, from, next) {
+        
+         },
+          computed:mapState(['selectedItem']),
+        
+       
+    }
+</script>
+
+<style scoped lang="scss">
+    // .tabs{
+    //     position: absolute;
+    //     top: 60px;
+    //     left:210px;
+    //     right: 0;
+    // }
+
+  
+   
+</style>
+
+<style>
+    #tab-home .el-icon-close{
+        display: none;
+    }
+</style>

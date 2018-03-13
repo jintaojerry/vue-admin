@@ -1,0 +1,29 @@
+<template>
+    <div>
+        <h2>{{msg}}</h2>
+        <hr>
+        <h3>{{count}}</h3>
+    </div>
+</template>
+
+<script>
+    import store from '@/store/store'
+    console.log(store)
+    import {mapState} from 'vuex'
+    export default {
+        data() {
+            return {
+                msg: '我是首页',
+
+            }
+        },
+        computed:mapState(['count']),
+            
+        
+        store
+    }
+</script>
+
+<style scoped>
+
+</style>

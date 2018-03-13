@@ -1,0 +1,40 @@
+<template>
+    <div class="m-header">
+        <img src="../common/image/logo.png" alt="" srcset="">
+         <el-button type="success" class="toggle-menu" @click="toggleMenu">切换</el-button>
+    </div>
+</template>
+
+<script>
+    export default {
+        data() {
+            return {
+            }
+        },
+        methods: {
+            toggleMenu() {
+                this.$emit('toggle')
+            },
+        },
+    }
+</script>
+
+<style scoped lang="scss">
+    .m-header{
+        height: 60px;
+        background: #373d41;
+        img{
+            width: 40px;
+            height: 40px;
+            margin-left: 30px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        .toggle-menu{
+           position: absolute;
+           top: 10px;
+           left: 150px;
+           padding: 12px;
+        }
+    }
+</style>

@@ -1,0 +1,64 @@
+<template>
+  <div class="layout">
+    <m-header @toggle = "toggleMenu"></m-header>
+    <div class="main">
+      <m-left @isToParent = "parentClickItem" :label = "label"></m-left>
+      <div class="content">
+          <tabs :selectedItem = "selectedItem" class="menu"></tabs>
+          <keep-alive>
+            <router-view class="view"></router-view>
+          </keep-alive>
+      </div>
+    </div>
+    
+   
+  </div>
+</template>
+
+<script>
+import MHeader from '@/base/m-header'
+import MLeft from '@/base/m-left'
+import Tabs from '@/base/tabs'
+
+
+export default {
+  data() {
+    return {
+      selectedItem: '',
+      label:true
+    }
+  },
+  methods: {
+    parentClickItem(item) {
+      this.selectedItem = item;
+    },
+    toggleMenu() {
+      this.label = !this.label;
+    }
+  },
+  components:{
+    MHeader,MLeft,Tabs
+  }
+}
+</script>
+
+<style >
+  @import url('../../common/sass/base.sass');
+   .main{
+     position: absolute;
+     top: 60px;
+     left: 0;
+     bottom: 0;
+     right: 0;
+     display: flex;
+   }
+   .content{
+     flex: 1;
+     display: flex;
+     flex-direction: column;
+   }
+   .view{
+     flex: 1;
+     position: relative;
+   }
+</style>

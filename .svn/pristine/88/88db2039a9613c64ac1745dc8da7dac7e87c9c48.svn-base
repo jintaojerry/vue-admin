@@ -1,0 +1,7 @@
+const state = {
+    selectedItem:'',
+    isCollapse:false,
+    defaultActive:'home',
+}
+
+export default state

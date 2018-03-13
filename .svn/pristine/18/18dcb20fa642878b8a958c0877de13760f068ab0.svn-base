@@ -1,0 +1,203 @@
+<template>
+   <div class="warpper" id="particles">
+     <div class="login-container">
+       <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px" class="demo-ruleForm">
+            <h3 class="title">服务器运维管理系统</h3>
+            <el-form-item prop="account">
+            <el-input type="text" v-model="ruleForm2.account" auto-complete="off" placeholder="账号"></el-input>
+            </el-form-item>
+            <el-form-item prop="checkPass">
+            <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off" placeholder="密码"></el-input>
+            </el-form-item>
+            <el-checkbox v-model="checked" class="remember">记住密码</el-checkbox>
+            <el-form-item style="width:100%;">
+            <el-button type="primary" style="width:100%;" @click.native.prevent="handleSubmit2" :loading="logining" class="login-btn">登录</el-button>
+            <!-- <el-button @click.native.prevent="handleReset2">重置</el-button> -->
+            </el-form-item>
+        </el-form>
+     </div>       
+    </div>
+  
+</template>
+
+<script>
+//import { requestLogin } from '../api/api';
+//import NProgress from 'nprogress'
+import particles from 'particles.js'
+
+ export default {
+    data() {
+      return {
+        logining: false,
+        ruleForm2: {
+          account: '',
+          checkPass: ''
+        },
+        rules2: {
+          account: [
+            { required: true, message: '请输入账号', trigger: 'blur' },
+            //{ validator: validaePass }
+          ],
+          checkPass: [
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            //{ validator: validaePass2 }
+          ]
+        },
+        checked: false
+      };
+    },
+    created(){
+        let loginParams = JSON.parse(localStorage.getItem('loginParams')) 
+        console.log(loginParams)
+        if (loginParams === null) {
+            console.log(1)
+            return false
+        } else if (loginParams !== null && loginParams.checked === true) {
+            console.log(2)
+            this.ruleForm2.account = loginParams.account;
+            this.ruleForm2.checkPass = loginParams.pwd;
+            this.checked = loginParams.checked;
+        }
+    },
+    mounted() {     
+      particlesJS.load('particles', '../../../static/particles.json');
+    },
+    methods: {
+      handleReset2() {
+        this.$refs.ruleForm2.resetFields();
+      },
+      handleSubmit2(ev) {
+        var _this = this;
+        this.$refs.ruleForm2.validate((valid) => {
+            // console.log(_this.ruleForm2)
+          if (valid) {           
+            this.logining = true;
+            var loginParams = { account: this.ruleForm2.account, pwd: this.ruleForm2.checkPass, checked: this.checked };
+                      
+            // this.$http({
+            //   url:'User/UserLogin',
+            //   baseURL: getApi(),
+            //   method:'post',
+            //   data: loginParams
+            // })
+            // .then(function (res) {
+            //   console.log(res);
+            //   if (res.status == 200) {
+            //     if (res.data.code == 0) {
+            //       _this.$message({
+            //           message: '登录成功',
+            //           type: 'success'
+            //       });
+            //        _this.logining = false;
+            //        localStorage.setItem('loginParams', JSON.stringify(loginParams));
+            //        _this.$router.push({ path: '/' });
+            //     } else {
+            //       console.log(_this)
+            //        _this.logining = false;
+            //        _this.$message.error(res.data.retmsg);
+            //     }
+            //   }
+            // })
+            // .catch(function (error) {
+            //   _this.logining = false;
+            //   _this.$message.error(error);
+            //   console.log(error);
+            // });
+            this.$http.post('User/UserLogin', loginParams, res => {
+                console.log(res)
+                  if (res.code == 0) {
+                    _this.$message({
+                        message: '登录成功',
+                        type: 'success'
+                    });
+                    _this.logining = false;
+                    localStorage.setItem('loginParams', JSON.stringify(loginParams));
+                    _this.$router.push({ path: '/' });
+                  } else {
+                    _this.logining = false;
+                    _this.$message.error(res.retmsg);
+                  }
+            })
+          } else {
+            // console.log('error submit!!');
+            this.$message.error('请输入正确的账号和密码');
+            return false;
+          }
+        });
+      }
+    }
+  }
+
+</script>
+
+<style lang="scss" scoped>
+.warpper{
+    // height: 100%;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // // background-color: #2d3a4b;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #373d41; 
+    overflow-y: hidden;
+}
+  .login-container {
+    /*box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);*/
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    background-clip: padding-box;
+    // margin: 180px auto;
+    width: 350px;
+    padding: 35px 35px 15px 35px;
+    background: #fff;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 0 25px #cac6c6;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    .title {
+      margin: 0px auto 40px auto;
+      text-align: center;
+      color: #505458;
+    }
+    .remember {
+      margin: 0px 0px 35px 0px;
+    }
+    
+  }
+</style>
+
+<style>
+.el-checkbox__inner:hover {
+    border-color: #373d41;
+}
+.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color: #373d41;
+    border-color: #373d41;
+}
+.el-checkbox__input.is-focus .el-checkbox__inner {
+    border-color: #373d41;
+}
+.el-checkbox__input.is-checked+.el-checkbox__label {
+    color: #373d41;
+}
+.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+        background-color: #373d41;
+        border-color: #373d41;
+}
+.login-btn {
+    background-color: #373d41;
+    border-color: #373d41;
+}
+.el-button--primary:focus, .el-button--primary:hover {
+    background: #8b8d8e;
+    border-color: #8b8d8e;
+    color: #fff;
+}
+</style>

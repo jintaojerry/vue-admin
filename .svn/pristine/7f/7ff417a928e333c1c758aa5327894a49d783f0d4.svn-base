@@ -1,0 +1,39 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+
+import Home from '@/components/home'
+import VehicleManagement from '@/components/vehicle-management'
+import UserManagement from '@/components/user-management'
+import GroupManagement from '@/components/group-management'
+
+Vue.use(Router)
+
+export default new Router({
+  mode:'history',
+  routes:[
+    {
+      path:'/',
+      redirect:'/home'
+    },
+    {
+      path:'/home',
+      component:Home,
+    },
+    {
+      path:'/user',
+      component:UserManagement,
+    },
+    {
+      path:'/vehicle',
+      component:VehicleManagement
+    },
+    {
+      path:'/group',
+      component:GroupManagement
+    },
+    {
+      path:'*',
+      component:Home
+    }
+  ]
+})

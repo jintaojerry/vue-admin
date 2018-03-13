@@ -1,0 +1,7 @@
+const state = {
+    count :4,
+    selectedItem:'',
+    isCollapse:true,
+}
+
+export default state

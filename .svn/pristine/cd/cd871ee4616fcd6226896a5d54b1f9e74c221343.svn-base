@@ -1,0 +1,11 @@
+const mutations = {
+    clickTab(state,index){
+        state.selectedItem = index
+    },
+    toggleMenu(state){
+        state.isCollapse = !state.isCollapse
+    },
+    
+}
+
+export default mutations
